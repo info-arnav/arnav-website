@@ -1,9 +1,6 @@
 .banner {
   display: flex;
   min-height: calc(100vh - 180px);
-  width: calc(100% - 20px);
-  max-width: 1000px;
-  margin: 0 auto;
   align-items: center;
   justify-content: center;
 }

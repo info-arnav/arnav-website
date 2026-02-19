@@ -7,7 +7,7 @@ export default function Navigation() {
   return (
     <nav className={styles.nav}>
       <div className={styles.inner}>
-        <div className={styles.row}>
+        <div className={`${styles.row} layout-rail`}>
           <div className={styles.left}>
             <Link href="/" aria-label="Home">
               <span className={styles.logo}>

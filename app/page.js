@@ -8,7 +8,7 @@ export const metadata = homeMetadata;
 export default function Home() {
   return (
     <>
-      <section className={styles.banner}>
+      <section className={`${styles.banner} layout-rail`}>
         <div className={styles.visual}>
           <Image
             src="/assets/avatar_lid.png"

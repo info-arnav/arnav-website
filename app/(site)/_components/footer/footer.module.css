@@ -16,10 +16,6 @@
   font-size: 14px;
 }
 
-.footer * {
-  transition: all 0.5s;
-}
-
 .link {
   color: var(--color-text);
   text-decoration: none;
@@ -30,6 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.5s;
 }
 
 .icon {
@@ -45,6 +42,7 @@
   overflow: hidden;
   white-space: nowrap;
   margin-bottom: 0;
+  transition: width 0.5s;
 }
 
 .link:hover .linkInner {

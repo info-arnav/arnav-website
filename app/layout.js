@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
         />
         <Navigation />
-        <main style={{ paddingTop: '62px' }}>{children}</main>
+        <main className="main-content">{children}</main>
       </body>
     </html>
   );

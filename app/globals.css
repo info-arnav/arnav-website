@@ -5,6 +5,7 @@
 }
 
 :root {
+  --nav-height: 62px;
   --color-bg: #ffffff;
   --color-surface: #ffffff;
   --color-text: #252525;
@@ -26,6 +27,16 @@
     --color-logo-middle: #474747;
     --color-logo-inner: #252525;
   }
+}
+
+.layout-rail {
+  width: calc(100% - 20px);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.main-content {
+  padding-top: var(--nav-height);
 }
 
 body {
