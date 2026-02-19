@@ -8,5 +8,11 @@ export default function Error({ error }) {
     console.error(error);
   }, [error]);
 
-  return <ErrorState title="ERROR XXX" description="Some Error Occurred" />;
+  return (
+    <ErrorState
+      title="ERROR XXX"
+      description="Some Error Occurred"
+      imageAlt="Error illustration"
+    />
+  );
 }

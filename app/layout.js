@@ -1,12 +1,6 @@
-import { Inter } from 'next/font/google';
 import './globals.css';
 import Navigation from './(site)/_components/nav';
 import { defaultMetadata, getJsonLdGraph } from '../lib/seo';
-
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-});
 
 export const metadata = defaultMetadata;
 
@@ -15,7 +9,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={inter.variable}>
+      <body>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}

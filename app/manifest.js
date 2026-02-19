@@ -30,7 +30,7 @@ export default function manifest() {
     shortcuts: [
       {
         name: siteConfig.name,
-        url: siteConfig.url,
+        url: '/',
       },
     ],
   };
