@@ -1,0 +1,161 @@
+.banner {
+  display: flex;
+  min-height: calc(100vh - 180px);
+  width: calc(100% - 20px);
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.avatar {
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.copy {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 109.08px;
+  line-height: 1;
+  margin-bottom: 5px;
+  color: var(--color-text);
+}
+
+.subheading {
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 7px;
+  margin-bottom: 10px;
+  color: var(--color-text);
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: var(--color-text);
+}
+
+.connect {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.connectText {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: var(--color-text);
+}
+
+.arrows {
+  width: 15.87px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.arrows path {
+  stroke: var(--color-text);
+  fill: transparent;
+  stroke-width: 1px;
+  animation: arrow 2s infinite;
+  -webkit-animation: arrow 2s infinite;
+}
+
+.arrows path.a1 {
+  animation-delay: -1s;
+  -webkit-animation-delay: -1s;
+}
+
+.arrows path.a2 {
+  animation-delay: -0.5s;
+  -webkit-animation-delay: -0.5s;
+}
+
+.arrows path.a3 {
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+}
+
+@keyframes arrow {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes arrow {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .banner {
+    display: block;
+    min-height: 0;
+  }
+
+  .banner * {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .avatar {
+    max-width: 400px;
+  }
+
+  .visual,
+  .copy {
+    max-width: 100%;
+  }
+
+  .heading {
+    font-size: 60px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .avatar {
+    max-width: 100%;
+  }
+}

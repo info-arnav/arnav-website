@@ -1,12 +1,10 @@
-const siteName = 'Arnav Gupta';
-const baseUrl = 'https://www.arnavgupta.net';
+import { siteConfig } from '../lib/profile';
 
 export default function manifest() {
   return {
-    name: siteName,
+    name: siteConfig.name,
     short_name: 'ArnavGupta',
-    description:
-      "Arnav Gupta's portfolio showcasing generative AI, computer vision, and full-stack work across DigiIQ, VML, NSUT, and beyond.",
+    description: siteConfig.description,
     start_url: '/',
     scope: '/',
     display: 'standalone',
@@ -31,8 +29,8 @@ export default function manifest() {
     ],
     shortcuts: [
       {
-        name: siteName,
-        url: baseUrl,
+        name: siteConfig.name,
+        url: siteConfig.url,
       },
     ],
   };

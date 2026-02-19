@@ -1,4 +1,4 @@
-const baseUrl = 'https://www.arnavgupta.net';
+import { siteConfig } from '../lib/profile';
 
 export default function robots() {
   return {
@@ -8,7 +8,7 @@ export default function robots() {
         allow: '/',
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   };
 }
