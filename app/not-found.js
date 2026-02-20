@@ -1,5 +1,9 @@
 import ErrorState from './(site)/_components/error-state';
 
+export const metadata = {
+  title: 'Error 404 - Page Not Found',
+};
+
 export default function NotFound() {
   return (
     <ErrorState
