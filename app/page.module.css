@@ -126,6 +126,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .arrows path {
+    animation: none;
+    -webkit-animation: none;
+    opacity: 1;
+  }
+}
+
 @media only screen and (max-width: 800px) {
   .banner {
     display: block;

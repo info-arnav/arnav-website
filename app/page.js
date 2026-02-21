@@ -12,29 +12,27 @@ export default function Home() {
         <div className={styles.visual}>
           <Image
             src="/assets/avatar_lid.png"
-            alt="Avatar"
+            alt="Portrait illustration of Arnav Gupta"
             width={1008}
             height={912}
             className={styles.avatar}
             sizes="(max-width: 800px) 100vw, 50vw"
-            unoptimized
             priority
           />
         </div>
         <div className={styles.copy}>
-          <h1 className={styles.heading}>Hi! I am Arnav</h1>
+          <h1 className={styles.heading}>Hi, I&apos;m Arnav</h1>
           <h2 className={styles.subheading}>Welcome to my website</h2>
           <p className={styles.description}>
-            So, I&apos;m a tech junkie caught in the awkward dance of
-            not-quite-a-teen, not-quite-an-adult. Life&apos;s a puzzle, and
-            I&apos;m the guy trying to assemble it with mismatched pieces.
-            Buckle up, &apos;cause this rollercoaster ain&apos;t got no chill!
+            I build practical products, run curious experiments, and share what
+            I learn along the way. This site is my corner of the internet for
+            projects, ideas, and useful things I&apos;m shipping.
           </p>
         </div>
       </section>
 
       <section className={styles.connect}>
-        <p className={styles.connectText}>Wanna Connect ?</p>
+        <p className={styles.connectText}>Want to connect?</p>
         <svg
           className={styles.arrows}
           viewBox="0 0 15.87 30"
