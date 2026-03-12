@@ -1,4 +1,4 @@
-import { siteConfig } from '../lib/profile';
+import { siteConfig } from '../lib/profile.js';
 
 export default function robots() {
   return {

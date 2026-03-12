@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navigation from './(site)/_components/nav';
-import { defaultMetadata, getJsonLdGraph } from '../lib/seo';
+import Navigation from './(site)/components/nav/index.js';
+import { defaultMetadata, getJsonLdGraph } from '../lib/seo.js';
 
 const inter = Inter({
   variable: '--font-inter',

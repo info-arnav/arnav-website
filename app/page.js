@@ -1,6 +1,6 @@
 import styles from './page.module.css';
-import Footer from './(site)/_components/footer';
-import { homeMetadata } from '../lib/seo';
+import Footer from './(site)/components/footer/index.js';
+import { homeMetadata } from '../lib/seo.js';
 import Image from 'next/image';
 
 export const metadata = homeMetadata;

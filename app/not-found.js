@@ -1,4 +1,4 @@
-import ErrorState from './(site)/_components/error-state';
+import ErrorState from './(site)/components/error-state/index.js';
 
 export const metadata = {
   title: 'Error 404 - Page Not Found',

@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import styles from './nav.module.css';
 
-const navItems = [{ href: '/', label: 'Home' }];
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' },
+];
 
 export default function Navigation() {
   return (

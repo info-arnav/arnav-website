@@ -5,7 +5,7 @@ import {
   FiLinkedin,
   FiTwitter,
 } from 'react-icons/fi';
-import { siteConfig } from '../../../../lib/profile';
+import { siteConfig } from '../../../../lib/profile.js';
 import styles from './footer.module.css';
 
 const footerLinks = [
