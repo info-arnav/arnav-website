@@ -1,0 +1,103 @@
+---
+title: I Vibe-Coded a Wake/Sleep AI Ecosystem
+description: >-
+  CogArch is a local-first experiment where specialist models debate, two full
+  agent systems compete on the same tasks, and a sleep cycle turns those
+  interactions into training signal for the next round.
+excerpt: >-
+  I built CogArch to test a simple idea: maybe intelligence looks less like one
+  giant model and more like a system that wakes, argues, sleeps, and comes
+  back slightly changed.
+publishedAt: 2026-04-16
+tags:
+  - ai
+  - multi agent
+  - local ai
+  - experiments
+  - cogarch
+---
+
+I recently vibe-coded a project called [CogArch](https://github.com/info-arnav/CogArch).
+
+The core idea is simple: maybe intelligence looks less like one giant model doing one giant forward pass, and more like a system that wakes up, argues with itself, goes to sleep, and comes back slightly changed.
+
+So I built a local-first architecture where a few specialist models reason in parallel, revise after seeing each other, hand everything to a coordinator, and log the interaction for later training. Then I duplicated the whole thing, made the two copies compete on the same tasks, and added a sleep cycle that turns wins, losses, and missed signals into training data.
+
+That is CogArch.
+
+## One agent is already a small society
+
+Inside one CogArch agent, there is not really one mind.
+
+There is a logical specialist, a creative specialist, a skeptical specialist, and an empathetic specialist. They all get the same input. They all answer independently first. Then they get to see each other's outputs and revise.
+
+After that, a coordinator model reads the whole exchange and produces the final answer with attribution and confidence.
+
+That second pass matters. Without it, you just have multiple answers. With it, you get something closer to deliberation. One specialist can spot a flaw, another can find a better angle, and another can notice that everyone solved the literal question while missing what the human was actually trying to do.
+
+If you have seen Andrej Karpathy's [`llm-council`](https://github.com/karpathy/llm-council), this is in the same family of ideas. But I wanted to push harder on adaptation over time, not just side-by-side comparison on one prompt.
+
+## Then I made two of them compete
+
+Once one agent society was working, the obvious next step was to duplicate it.
+
+Now imagine two full CogArch systems getting the exact same task. Each one runs its own internal debate. Each one produces its own final answer. Then both get scored against ground truth.
+
+That gives you a winner, a loser, or a tie.
+
+The useful part is not the scoreboard. The useful part is the learning signal that comes after. The losing side does not just hear "wrong." It gets to see a different reasoning path that beat it on the same task.
+
+That is where the project started to feel alive to me. Two systems become part of each other's environment. They put pressure on each other. Better strategies survive more often. Weak ones get exposed.
+
+## The sleep cycle is the point
+
+The most important part of the repo is not the debate itself. It is what happens after.
+
+CogArch has an explicit wake/sleep loop.
+
+In the waking phase, the system handles live work:
+
+- specialists answer in parallel
+- they revise after seeing peers
+- the coordinator synthesizes
+- the whole interaction gets logged
+
+After enough interactions, or after a competitive session, the system goes to sleep.
+
+During sleep, it curates the experience log and pulls out the highest-signal moments: losses, high disagreement, and cases where the coordinator trusted the wrong internal voice. Then it builds per-specialist datasets from those interactions. The logical specialist does not need to learn the same thing the skeptical specialist does. That is one of the main design choices in the project.
+
+From there, the repo can fine-tune specialists with QLoRA, register versioned models, test again, and even roll back if the new version regresses.
+
+## My favorite mechanic: vindication
+
+The most interesting part of the system is something called vindication.
+
+Say the coordinator mostly trusts the logical specialist on a task and ignores the skeptical specialist. Later, when the result gets scored, it turns out the skeptical specialist was actually more correct.
+
+That is not just an error. It is a routing failure. The right instinct was already inside the system and got ignored.
+
+So CogArch records that as a vindication event. During sleep, those cases get extra weight. In other words, the system tries to remember: you should have listened to that voice.
+
+I think that matters well beyond benchmarks. A lot of failure in real work is not that nobody had the right idea. It is that the right idea existed somewhere in the room and got ignored.
+
+## Why I think this matters for coding
+
+Coding is not one skill.
+
+Good coding usually needs generation, critique, debugging, edge-case paranoia, design judgment, and some sense of user intent. That already looks more like a multi-specialist problem than a one-shot answer problem.
+
+That is why CogArch interests me. I do not think the next useful agent systems are only about bigger models and larger context windows. I think structure matters too.
+
+What gets separated.
+
+What gets combined.
+
+What gets remembered.
+
+What gets reinforced after a loss.
+
+CogArch is still a rough research project. It is local-first, CLI-first, and very much experimental. But I think the shape is interesting.
+
+Maybe the future is not one assistant doing everything in one pass.
+
+Maybe it is systems that wake up, argue, compete, sleep, and come back slightly different.
