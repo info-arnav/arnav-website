@@ -1,13 +1,13 @@
 ---
-title: I Vibe-Coded a Wake/Sleep AI Ecosystem
+title: I Vibe-Coded a Code Competition Lab
 description: >-
-  CogArch is a local-first experiment where specialist models debate, two full
-  agent systems compete on the same tasks, and a sleep cycle turns those
-  interactions into training signal for the next round.
+  CogArch is a local-first code competition architecture with two independent
+  agents, four specialists per agent, hidden-test scoring, persistent memory,
+  and a self-improvement loop measured on held-out HumanEval.
 excerpt: >-
-  I built CogArch to test a simple idea: maybe intelligence looks less like one
-  giant model and more like a system that wakes, argues, sleeps, and comes
-  back slightly changed.
+  I rebuilt CogArch into something sharper than a generic multi-agent demo:
+  MBPP for competition, DPO pairs from wins and near-misses, QLoRA fine-tuning,
+  memory consolidation, and rollback when performance slips.
 publishedAt: 2026-04-16
 tags:
   - ai
@@ -17,87 +17,68 @@ tags:
   - cogarch
 ---
 
-I recently vibe-coded a project called [CogArch](https://github.com/info-arnav/CogArch).
+I recently rebuilt [CogArch](https://github.com/info-arnav/CogArch).
 
-The core idea is simple: maybe intelligence looks less like one giant model doing one giant forward pass, and more like a system that wakes up, argues with itself, goes to sleep, and comes back slightly changed.
+The current version is not a vague multi-agent ecosystem. It is a local-first code competition lab.
 
-So I built a local-first architecture where a few specialist models reason in parallel, revise after seeing each other, hand everything to a coordinator, and log the interaction for later training. Then I duplicated the whole thing, made the two copies compete on the same tasks, and added a sleep cycle that turns wins, losses, and missed signals into training data.
+The question behind it is simple: can two models make each other better the way two humans get sharper through competition? So the repo takes real coding problems, runs two independent agents against them, ranks the results by hidden tests, and turns that ranking into training data for the next cycle.
 
-That is CogArch.
+## Two agents, four specialists each
 
-## One agent is already a small society
+Each agent has four specialists: logical, creative, skeptical, and empathetic.
 
-Inside one CogArch agent, there is not really one mind.
+They all solve the same problem independently. Each specialist can make up to 10 attempts. After a failed attempt it sees partial pass counts, failed assertions, and traceback output, but never the hidden tests themselves.
 
-There is a logical specialist, a creative specialist, a skeptical specialist, and an empathetic specialist. They all get the same input. They all answer independently first. Then they get to see each other's outputs and revise.
+That detail is the whole point. CogArch is not trying to fake depth with a long conversation. It is trying to create different solution paths and score them with something harder than vibes: pass rate.
 
-After that, a coordinator model reads the whole exchange and produces the final answer with attribution and confidence.
+Inside each agent, the coordinator is blunt. It picks the specialist that reached the highest pass rate, and if two specialists tie, it prefers the one that got there in fewer attempts.
 
-That second pass matters. Without it, you just have multiple answers. With it, you get something closer to deliberation. One specialist can spot a flaw, another can find a better angle, and another can notice that everyone solved the literal question while missing what the human was actually trying to do.
+## Competition becomes the learning signal
 
-If you have seen Andrej Karpathy's [`llm-council`](https://github.com/karpathy/llm-council), this is in the same family of ideas. But I wanted to push harder on adaptation over time, not just side-by-side comparison on one prompt.
+Once one agent can do that, the useful move is to duplicate it.
 
-## Then I made two of them compete
+Agent A and Agent B solve the exact same MBPP problem with no shared state. Then the system compares their best outputs and decides who won.
 
-Once one agent society was working, the obvious next step was to duplicate it.
+What I like here is that the repo does not waste failure. If both sides miss the problem, CogArch still ranks them by partial credit and turns the better attempt into `chosen` and the worse one into `rejected`. Unless both sides produce effectively identical code, the round can still become DPO data.
 
-Now imagine two full CogArch systems getting the exact same task. Each one runs its own internal debate. Each one produces its own final answer. Then both get scored against ground truth.
+That feels closer to real engineering work than a clean win-or-nothing setup. A lot of progress comes from near misses.
 
-That gives you a winner, a loser, or a tie.
+## The benchmark split is disciplined
 
-The useful part is not the scoreboard. The useful part is the learning signal that comes after. The losing side does not just hear "wrong." It gets to see a different reasoning path that beat it on the same task.
+The part I respect most is that the repo draws a real line between training and evaluation.
 
-That is where the project started to feel alive to me. Two systems become part of each other's environment. They put pressure on each other. Better strategies survive more often. Weak ones get exposed.
+MBPP is the training arena. HumanEval is held out. The system never trains on HumanEval, then uses HumanEval Pass@1 with a single attempt and no feedback to see whether a cycle actually improved anything.
 
-## The sleep cycle is the point
+That keeps the project honest. If the score moves, it has to move on problems the system did not learn from directly.
 
-The most important part of the repo is not the debate itself. It is what happens after.
+## Memory is more than chat history
 
-CogArch has an explicit wake/sleep loop.
+CogArch also treats memory as more than a long prompt.
 
-In the waking phase, the system handles live work:
+It keeps working memory for the current session, episodic memory for past problem attempts, semantic memory for patterns extracted during consolidation, and procedural memory in the fine-tuned weights themselves. Retrieval uses `nomic-embed-text` through Ollama, so a specialist can pull in similar past episodes before attempt one.
 
-- specialists answer in parallel
-- they revise after seeing peers
-- the coordinator synthesizes
-- the whole interaction gets logged
+That is where the wake/sleep framing still earns its keep. During the wake phase, the system solves problems and records outcomes. During sleep, it consolidates episodes into reusable patterns, prunes weak history, builds per-specialist datasets, fine-tunes, and updates the model registry.
 
-After enough interactions, or after a competitive session, the system goes to sleep.
+## I like the rollback more than the fine-tune
 
-During sleep, it curates the experience log and pulls out the highest-signal moments: losses, high disagreement, and cases where the coordinator trusted the wrong internal voice. Then it builds per-specialist datasets from those interactions. The logical specialist does not need to learn the same thing the skeptical specialist does. That is one of the main design choices in the project.
+The flashy part is QLoRA fine-tuning through `unsloth`, exporting GGUFs, and registering versioned specialist models in Ollama.
 
-From there, the repo can fine-tune specialists with QLoRA, register versioned models, test again, and even roll back if the new version regresses.
+The sober part is better: rollback.
 
-## My favorite mechanic: vindication
+If a cycle regresses past the configured threshold, CogArch can revert the specialist models instead of pretending every learning step was progress. That is the kind of behavior I want from experimental systems. Keep the loop ambitious, but keep the evaluation honest.
 
-The most interesting part of the system is something called vindication.
+## Why this version feels real
 
-Say the coordinator mostly trusts the logical specialist on a task and ignores the skeptical specialist. Later, when the result gets scored, it turns out the skeptical specialist was actually more correct.
+What makes the current repo interesting to me is how concrete it is.
 
-That is not just an error. It is a routing failure. The right instinct was already inside the system and got ignored.
+- it runs locally through Ollama
+- it uses hidden tests instead of self-scoring
+- it turns both wins and near-misses into preference data
+- it separates MBPP training from HumanEval evaluation
+- it keeps memory and model versions across cycles
 
-So CogArch records that as a vindication event. During sleep, those cases get extra weight. In other words, the system tries to remember: you should have listened to that voice.
+That is a much sharper claim than "many agents talk to each other." It says structure, memory, competition, and disciplined evaluation might help coding systems improve over time.
 
-I think that matters well beyond benchmarks. A lot of failure in real work is not that nobody had the right idea. It is that the right idea existed somewhere in the room and got ignored.
+CogArch is still experimental, still CLI-first, and still rough around the edges. But now it reads less like a metaphor and more like a real research rig.
 
-## Why I think this matters for coding
-
-Coding is not one skill.
-
-Good coding usually needs generation, critique, debugging, edge-case paranoia, design judgment, and some sense of user intent. That already looks more like a multi-specialist problem than a one-shot answer problem.
-
-That is why CogArch interests me. I do not think the next useful agent systems are only about bigger models and larger context windows. I think structure matters too.
-
-What gets separated.
-
-What gets combined.
-
-What gets remembered.
-
-What gets reinforced after a loss.
-
-CogArch is still a rough research project. It is local-first, CLI-first, and very much experimental. But I think the shape is interesting.
-
-Maybe the future is not one assistant doing everything in one pass.
-
-Maybe it is systems that wake up, argue, compete, sleep, and come back slightly different.
+*Written with Vox.*
