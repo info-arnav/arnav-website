@@ -1,0 +1,83 @@
+---
+title: Unlocalhost is agent first hosting with a guest list
+description: >-
+  I built unlocalhost because prototyping now takes minutes and sharing still
+  takes an afternoon. You connect an MCP server, tell your agent to deploy, and
+  get a real link that only the people you named can open.
+excerpt: >-
+  Building got fast and sharing did not. Unlocalhost lets your coding agent
+  deploy to a real server behind a sign in wall, with no auth code in your app.
+publishedAt: 2026-07-26
+tags:
+  - mcp
+  - coding agents
+  - deployment
+  - open source
+  - unlocalhost
+---
+
+I built [unlocalhost](https://www.unlocalhost.tech/) because building got fast and sharing did not.
+
+An idea that used to take a weekend now takes a few minutes. You describe it, the agent writes it, and it runs on your machine almost immediately. Then you want to show someone, and the whole thing stops.
+
+Now you need a server, a domain, a certificate, and some way to keep strangers out. None of that got faster. So the last mile is where everything slows down, and it is the part your agent cannot do for you.
+
+## The gap is sharing, not building
+
+Watch what people actually do when they hit that wall.
+
+They put it on a public URL and hope nobody finds it. They commit an API key because the deploy needs it and moving it somewhere safe is one more thing to learn. They write a login screen in an afternoon, having never written authentication before, and put real data behind it.
+
+None of that is carelessness. It is what happens when the tooling makes the safe path slower than the unsafe one.
+
+I wanted the safe path to be the fast one. Not because people should be more disciplined, but because the disciplined version should take less effort than the sloppy version.
+
+## The guest list is the product
+
+The thing I care about most is that access is a list of people, not a password.
+
+You say who is allowed in. They sign in with GitHub or Google. Everyone else is stopped before the request reaches your code. When you change your mind, removing someone takes effect immediately, not after a redeploy.
+
+That check happens at the edge, in front of your app, which means the app itself has no authentication in it at all. No login screen, no sessions, no auth library, nothing to get wrong. The demo I deployed has zero dependencies and no auth code, and it is still private. It even prints the visitor's verified email address, which it never asked for and cannot fake.
+
+This matters most for the boring cases. Internal dashboards. Test tools. The thing you built for two colleagues. Those are exactly the projects where nobody wants to build a login system, so they usually end up with no protection at all.
+
+## It refuses to deploy your secrets
+
+Every deploy gets read before it runs.
+
+If there is an env file committed, or something shaped like a key, the deploy stops and tells you which file to fix. Nothing goes online. I would rather block a deploy than publish someone's Stripe key.
+
+Secrets are passed separately, encrypted at rest, and injected into the app when it builds. Your agent handles that as part of the same sentence. There is no separate secrets tool to open, no dashboard to visit, no second place to keep in sync.
+
+I tested this by deliberately committing an env file and deploying it. It refused, named the file, and told me how to fix it. That was a good afternoon.
+
+## Agent first means there is nothing to learn
+
+There is no dashboard. There is no CLI.
+
+Your coding agent drives the whole thing over MCP. You say "deploy this and let sarah@gmail.com in" and that is the workflow. If the build fails, the agent reads the logs, fixes the code, and deploys again without you reading a stack trace.
+
+Setup is one sentence pasted into whatever agent you already have open, pointing it at a page written for agents rather than people. It works out which config file to edit and does it. You never open one yourself.
+
+One decision I am glad about: your agent pushes with your own git credentials. Unlocalhost never holds write access to anything of yours. It reads the repository you pick and nothing else.
+
+## What it is not
+
+It is not a tunnel. A tunnel forwards to your machine, so it dies when you close your laptop. Here the app is built and runs on a server, and the link keeps working after you walk away.
+
+It is also not a general hosting platform. The big ones host beautifully, but they make things public by default, and putting a wall in front usually means paying for a plan or giving your friend a seat on your team. A guest list of specific humans is a strange thing to charge for.
+
+It is early. Isolation is container level, there are no per user quotas yet, and app deletion still means me doing it on the server. It is MIT licensed and runs from one compose file, so if you would rather not trust my box with anything real, run your own.
+
+## Why this feels worth building
+
+The interesting shift is not that agents write code well. It is that the slow parts of software are moving.
+
+When building takes minutes, everything around building becomes the bottleneck. Sharing, access, secrets, and the small administrative work of putting something in front of another person. Those used to be rounding errors next to the time spent writing the thing. Now they are most of it.
+
+Unlocalhost is one narrow attempt at that. It takes the part your agent cannot do and makes it something your agent can do, without asking you to become an infrastructure person first.
+
+If the thing you built is already running on your machine, it should not take an afternoon to let one person see it.
+
+_Written with [Vox](https://www.vox-ai.chat/)._
