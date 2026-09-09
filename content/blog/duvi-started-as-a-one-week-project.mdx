@@ -1,0 +1,70 @@
+---
+title: Duvi Started as a One Week Project
+description: >-
+  I have been building things since I was a kid and I always thought they were
+  production ready. Then I spent a year finding out what actually breaks when
+  people show up, and it turned into Duvi.
+excerpt: >-
+  I gave the first DigiIQ chatbot one week. It took a year, a lot of crashes,
+  and a live agent for Mahindra Electric before I was ready to open Duvi
+  Studio.
+publishedAt: 2026-09-09
+tags:
+  - duvi
+  - ai agents
+  - voice
+  - scale
+  - digiiq
+---
+
+I have been building things since I was young. Sites, tools, small apps, whatever the idea was that week. Every single one of them I shipped believing it was production ready.
+
+About a year and a half ago I started working on DigiIQ, and that belief did not survive contact with real traffic.
+
+## Ten thousand users and ten thousand an hour are different problems
+
+Before DigiIQ, the biggest thing I had built was [Nalum](https://alumni.nsut.ac.in). Ten thousand users. I was proud of that number and I still am, it is a real number and people actually used the thing.
+
+What I did not understand is that ten thousand users spread across a year and ten thousand unique visitors inside a single hour are not the same problem at different sizes. They are different problems.
+
+At ten thousand over a year, nothing you wrote is ever under pressure at the same moment. A slow query is a slow page for one person. A crash is an apology and a restart. You never see the shape of your own system because nothing ever pushes on all of it at once.
+
+At ten thousand in an hour, everything happens simultaneously. Every assumption you made about "this will be fine" gets tested in parallel by strangers who did not read your code and do not care that it worked on your laptop.
+
+## I gave the chatbot a week
+
+Last August I started building the first chatbot for DigiIQ. I estimated a week. Wire a model to a page, hand it the content, ship it, move on.
+
+Here is what was actually in that week, and none of it was on my list:
+
+Infrastructure. Not "where do I deploy it", but what happens when the model provider degrades instead of failing, when one instance holds a lock the others are waiting on, when a queue backs up at the exact moment traffic peaks.
+
+Latency. I had never in my life cared about a hundred milliseconds. On a phone call, a hundred milliseconds is the difference between a conversation and a person saying "hello?" into silence. There is no spinner on a phone call. If the agent takes too long, the customer starts talking again, and now you have two problems.
+
+Cost. Every conversation has a price, and that price is a product decision, not a billing detail. Choosing a model, deciding what history to keep, deciding what to cache and for how long, all of it is money per conversation multiplied by however many conversations you were hoping to have.
+
+Scale. The chatbot that answers you perfectly at your desk answers three hundred people the same way, or it does not, and you find out which one on the day it matters.
+
+## It crashed, a lot
+
+I do not want to make this sound like a clean arc. It crashed. It crashed in ways I did not have language for at the time, which is its own problem, because you cannot fix what you cannot describe.
+
+Nothing taught me the shape of my own system faster than watching it fail with real people inside it. Every outage turned into something specific: a threshold, a timeout, a retry that made things worse, a cache that saved money and cost time. That list is the actual product of last year. The code is downstream of it.
+
+## Then it held
+
+The Mahindra Electric agent is live. It answers real questions about range, charging and features across the lineup, at two in the morning, when no dealership is open and no human is going to pick up.
+
+It stayed up. It stayed fast. It answered from real content instead of guessing. That was the first time the thing I built stopped being a thing I hoped would work.
+
+## Duvi is that year, made into a product
+
+[Duvi](https://www.duvi.ai) is what came out of it. You describe the agent you want in your own words and Duvi builds it. It answers from your own content, it calls your own systems when a question needs a real answer instead of a link, and it runs on your website, on WhatsApp and on your phone number as one agent instead of three separate projects.
+
+All the parts I learned the expensive way are underneath it. The latency budget, the failover, the compaction, the caching rules. You should never have to think about any of them, which is the whole point.
+
+[Duvi Studio](https://www.duvi.ai/studio) opens soon and we are letting people in a group at a time. The waiting list is on the site.
+
+I still think everything I build is production ready. The difference now is that I know what that sentence costs.
+
+_Written with [Vox](https://www.vox-ai.chat/)._
